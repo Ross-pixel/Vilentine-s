@@ -65,11 +65,10 @@
   }
 
   #noBtn {
-    background: #e0e0e0;
-    color: #333;
-    left: 50%;
-    transform: translateX(10%);
-  }
+  position: fixed;
+  background: #e0e0e0;
+  color: #333;
+}
 
   .footer {
     margin-top: 16px;
@@ -134,26 +133,41 @@
   ];
 
   noBtn.addEventListener("click", () => {
-    noClicks++;
+  noClicks++;
 
-    gif.src = "https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif";
-    text.textContent = phrases[Math.min(noClicks - 1, phrases.length - 1)];
+  gif.src = "https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif";
+  text.textContent = phrases[Math.min(noClicks - 1, phrases.length - 1)];
 
-    yesScale += 0.2;
-    yesBtn.style.transform = `translateX(-110%) scale(${yesScale})`;
+  // Увеличиваем кнопку "Да"
+  yesScale += 0.2;
+  yesBtn.style.transform = `translateX(-110%) scale(${yesScale})`;
 
-    if (noClicks >= 2) {
-      const x = Math.random() * 180;
-      const y = Math.random() * 40;
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    }
+  // После 1 клика — кнопка начинает убегать
+  if (noClicks >= 1) {
+    moveNoButton();
+  }
 
-    if (noClicks >= 6) {
-      text.textContent = "Ладно… я всё равно тебя люблю ❤️";
-      noBtn.style.display = "none";
-    }
-  });
+  // Секретный финал
+  if (noClicks >= 6) {
+    text.textContent = "Ладно… я всё равно тебя люблю ❤️";
+    noBtn.style.display = "none";
+  }
+});
+
+function moveNoButton() {
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = window.innerWidth - btnWidth;
+  const maxY = window.innerHeight - btnHeight;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+}
+
 
   yesBtn.addEventListener("click", () => {
     gif.src = "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif";
